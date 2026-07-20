@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plan Elizabeth">
+<title>Plan Elizabeth — Julio 2026</title>
+<style>
+  :root{
+    --ink:#182420;
+    --panel:#1f2f29;
+    --line:rgba(243,239,230,0.12);
+    --cream:#F3EFE6;
+    --cream-dim:#C9C2AE;
+    --mango:#E8A33D;
+    --sage:#8FA98A;
+    --rest:#7C93B0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--ink);color:var(--cream);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
+  .board{max-width:520px;margin:0 auto;padding:18px 14px 60px;}
+
+  header{padding:6px 4px 14px;margin-bottom:14px;}
+  .eyebrow{font-family:'Courier New',monospace;letter-spacing:.14em;font-size:11px;
+    color:var(--sage);text-transform:uppercase;margin-bottom:6px;}
+  h1{font-size:24px;margin:0;font-weight:700;letter-spacing:-0.01em;}
+
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px;}
+  .day-btn{padding:10px 0;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel);color:var(--cream-dim);font-size:13px;font-weight:700;
+    text-align:center;cursor:pointer;}
+  .day-btn.active{background:var(--mango);color:#1b1206;border-color:var(--mango);}
+  .day-btn.active.is-rest{background:var(--rest);color:#101820;border-color:var(--rest);}
+
+  .status{display:flex;justify-content:space-between;align-items:center;
+    padding:12px 14px;border-radius:12px;background:var(--panel);
+    border:1px solid var(--line);margin-bottom:16px;}
+  .status .name{font-size:16px;font-weight:700;}
+  .status .type{font-family:'Courier New',monospace;font-size:12px;padding:4px 10px;
+    border-radius:20px;background:rgba(232,163,61,0.15);color:var(--mango);}
+  .status .type.is-rest{background:rgba(124,147,176,0.18);color:var(--rest);}
+
+  .meal{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin-bottom:10px;}
+  .meal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .meal-name{font-size:14px;font-weight:700;}
+  .meal-time{font-family:'Courier New',monospace;font-size:13px;color:var(--mango);
+    background:rgba(232,163,61,0.1);padding:2px 8px;border-radius:6px;}
+  .is-rest .meal-time{color:var(--rest);background:rgba(124,147,176,0.14);}
+  .opt{font-size:13.5px;line-height:1.55;color:var(--cream-dim);margin-top:4px;}
+  .opt b{color:var(--cream);font-weight:600;}
+  .opt-label{display:inline-block;font-size:10.5px;font-weight:700;color:var(--sage);
+    letter-spacing:.04em;margin-right:4px;}
+  .note-inline{font-size:12px;color:var(--cream-dim);font-style:italic;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="board">
+  <header>
+    <div class="eyebrow">JM Team · Julio 2026</div>
+    <h1>Plan de Elizabeth</h1>
+  </header>
+
+  <div class="week" id="week"></div>
+  <div class="status" id="status"></div>
+  <div id="meals"></div>
+</div>
+
+<script>
+// ---- Datos base: comidas por tipo de entrenamiento ----
+const MEALS = {
+  gluteo: [
+    { time:'6:15', name:'Desayuno 1', opts:[
+        '40g crema de arroz + 20g proteína + 80g frutos rojos'],
+      note:'Pre-entreno: café o té verde · Intra: 6g creatina + 1g sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
+    { time:'9:30', name:'Desayuno 2', opts:[
+        '70g jamón serrano / atún / lomo embuchado + <b>180g</b> pan de centeno + 5g aceite de oliva + tomate al gusto'] },
+    { time:'12:30', name:'Comida 3', opts:[
+        '1 yogur de proteína (10-11g) + 1 manzana + 15g almendras'] },
+    { time:'15:30', name:'Comida', opts:[
+        '<span class="opt-label">OP.1</span>150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz',
+        '<span class="opt-label">OP.2</span>150g chuletas de pavo + 200g verdura verde + 220g patata',
+        '<span class="opt-label">OP.3</span>150g ternera + 60g pasta + 200g verdura verde'] },
+    { time:'18:30', name:'Merienda', opts:[
+        '150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%'] },
+    { time:'21:30', name:'Cena', opts:[
+        '<span class="opt-label">OP.1</span>2 huevos enteros + 250g verdura verde + 30g tortas/arroz de arroz',
+        '<span class="opt-label">OP.2</span>140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz',
+        '<span class="opt-label">OP.3</span>170g ternera + 180g patata + 250g verdura verde'] },
+    { time:'00:00', name:'Recena', opts:[
+        '20g caseína — solo si está despierta'] },
+  ],
+  crossfit: [
+    { time:'6:15', name:'Desayuno 1', opts:[
+        '40g crema de arroz + 20g proteína + 80g frutos rojos'],
+      note:'Pre-entreno: café o té verde · Intra: 6g creatina + 1g sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
+    { time:'9:30', name:'Desayuno 2', opts:[
+        '70g jamón serrano / atún / lomo embuchado + <b>120g</b> pan de centeno + 5g aceite de oliva + tomate al gusto'] },
+    { time:'12:30', name:'Comida 3', opts:[
+        '1 yogur de proteína (10-11g) + 1 manzana + 15g almendras'] },
+    { time:'15:30', name:'Comida', opts:[
+        '<span class="opt-label">OP.1</span>150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz',
+        '<span class="opt-label">OP.2</span>150g chuletas de pavo + 200g verdura verde + 220g patata'] },
+    { time:'18:30', name:'Merienda', opts:[
+        '150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%'] },
+    { time:'21:30', name:'Cena', opts:[
+        '<span class="opt-label">OP.1</span>2 huevos enteros + 250g verdura verde + 30g tortas/arroz de arroz',
+        '<span class="opt-label">OP.2</span>140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz'] },
+    { time:'00:00', name:'Recena', opts:[
+        '20g caseína — solo si está despierta'] },
+  ],
+  descanso: [
+    { time:'8:30', name:'Desayuno 1', opts:[
+        '200g queso fresco batido 0% + 100g frutos rojos/sandía + 10g almendras + 40g corn flakes sin azúcar'],
+      note:'Se puede añadir leche desnatada o de almendras + edulcorante' },
+    { time:'12:00', name:'Desayuno 2', opts:[
+        '100g pechuga de pavo (+90%) + 40g tortas de arroz + 1 manzana'] },
+    { time:'15:00', name:'Comida', opts:[
+        '<span class="opt-label">OP.1</span>150g pescado blanco/sepia/langostinos + 300g verdura verde + 2 yogures 0%',
+        '<span class="opt-label">OP.2</span>150g lomo/solomillo de cerdo + 300g verdura verde + 2 yogures 0%'] },
+    { time:'18:00', name:'Merienda', opts:[
+        '120g claras de huevo + 1 huevo + 100g frutos rojos + 40g crema de arroz (tortitas o bizcocho)'] },
+    { time:'21:30', name:'Cena', opts:[
+        '<span class="opt-label">OP.1</span>150g chuletas de pavo + 200g verdura verde + 100g patata',
+        '<span class="opt-label">OP.2</span>150g pechuga de pollo/pavo + 200g verdura verde + 100g patata'] },
+    { time:'00:00', name:'Recena', opts:[
+        '20g caseína — solo si está despierta'] },
+  ]
+};
+
+// ---- Qué toca cada día de la semana ----
+// key: 0=domingo ... 6=sábado (getDay() de JS)
+const WEEK = [
+  { label:'D', full:'Domingo',   type:'descanso' },
+  { label:'L', full:'Lunes',     type:'gluteo'   },
+  { label:'M', full:'Martes',    type:'crossfit' },
+  { label:'X', full:'Miércoles', type:'crossfit' },
+  { label:'J', full:'Jueves',    type:'crossfit' },
+  { label:'V', full:'Viernes',   type:'gluteo'   },
+  { label:'S', full:'Sábado',    type:'descanso' },
+];
+
+const TYPE_LABEL = { gluteo:'Glúteo', crossfit:'CrossFit', descanso:'Descanso' };
+
+let selected = new Date().getDay(); // hoy por defecto
+
+function render(){
+  const weekEl = document.getElementById('week');
+  weekEl.innerHTML = '';
+  WEEK.forEach((d, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'day-btn' + (i === selected ? ' active' : '') +
+      (i === selected && d.type === 'descanso' ? ' is-rest' : '');
+    btn.textContent = d.label;
+    btn.onclick = () => { selected = i; render(); };
+    weekEl.appendChild(btn);
+  });
+
+  const day = WEEK[selected];
+  const isRest = day.type === 'descanso';
+
+  const statusEl = document.getElementById('status');
+  statusEl.className = 'status' + (isRest ? ' is-rest' : '');
+  statusEl.innerHTML = `
+    <span class="name">${day.full}</span>
+    <span class="type${isRest ? ' is-rest' : ''}">${TYPE_LABEL[day.type]}</span>
+  `;
+
+  const mealsEl = document.getElementById('meals');
+  mealsEl.innerHTML = '';
+  MEALS[day.type].forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'meal' + (isRest ? ' is-rest' : '');
+    div.innerHTML = `
+      <div class="meal-head">
+        <span class="meal-name">${m.name}</span>
+        <span class="meal-time">${m.time}</span>
+      </div>
+      ${m.opts.map(o => `<div class="opt">${o}</div>`).join('')}
+      ${m.note ? `<div class="note-inline">${m.note}</div>` : ''}
+    `;
+    mealsEl.appendChild(div);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
