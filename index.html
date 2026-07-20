@@ -5,68 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Plan Elizabeth">
-<title>Plan Elizabeth — Julio 2026</title>
+<meta name="apple-mobile-web-app-title" content="Nutriapp">
+<title>Nutriapp — Plan de Elizabeth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#182420;
-    --panel:#1f2f29;
-    --line:rgba(243,239,230,0.12);
-    --cream:#F3EFE6;
-    --cream-dim:#C9C2AE;
-    --mango:#E8A33D;
-    --sage:#8FA98A;
+    --ink:#1C1412;
+    --panel:#271C19;
+    --panel2:#2E211D;
+    --line:rgba(243,237,228,0.12);
+    --chalk:#F3EDE4;
+    --chalk-dim:#C9BEB0;
+    --gold:#F2B705;
+    --corallo:#E8503A;
     --rest:#7C93B0;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:var(--ink);color:var(--cream);
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
-  .board{max-width:520px;margin:0 auto;padding:18px 14px 60px;}
+  html,body{margin:0;padding:0;background:var(--ink);color:var(--chalk);
+    font-family:'Work Sans',system-ui,-apple-system,sans-serif;}
+  .board{max-width:520px;margin:0 auto;padding:20px 14px 60px;}
 
-  header{padding:6px 4px 14px;margin-bottom:14px;}
-  .eyebrow{font-family:'Courier New',monospace;letter-spacing:.14em;font-size:11px;
-    color:var(--sage);text-transform:uppercase;margin-bottom:6px;}
-  h1{font-size:24px;margin:0;font-weight:700;letter-spacing:-0.01em;}
+  header{padding:4px 2px 18px;margin-bottom:16px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:12px;}
+  .badge{width:42px;height:42px;flex:none;border-radius:10px;
+    background:linear-gradient(135deg, var(--corallo), var(--gold));
+    display:flex;align-items:center;justify-content:center;}
+  .badge svg{width:24px;height:24px;}
+  .brand-text{flex:1;}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.04em;
+    line-height:1;color:var(--chalk);}
+  .tagline{font-family:'Courier New',monospace;font-size:10.5px;letter-spacing:.08em;
+    color:var(--chalk-dim);text-transform:uppercase;margin-top:3px;}
+  .tagline b{color:var(--gold);}
 
   .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px;}
-  .day-btn{padding:10px 0;border-radius:10px;border:1px solid var(--line);
-    background:var(--panel);color:var(--cream-dim);font-size:13px;font-weight:700;
-    text-align:center;cursor:pointer;}
-  .day-btn.active{background:var(--mango);color:#1b1206;border-color:var(--mango);}
-  .day-btn.active.is-rest{background:var(--rest);color:#101820;border-color:var(--rest);}
+  .day-btn{padding:11px 0;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel);color:var(--chalk-dim);font-size:13px;font-weight:700;
+    text-align:center;cursor:pointer;font-family:'Work Sans',sans-serif;}
+  .day-btn.active.t-gluteo{background:var(--gold);color:#241a00;border-color:var(--gold);}
+  .day-btn.active.t-crossfit{background:var(--corallo);color:#2a0900;border-color:var(--corallo);}
+  .day-btn.active.t-descanso{background:var(--rest);color:#0e1620;border-color:var(--rest);}
 
   .status{display:flex;justify-content:space-between;align-items:center;
-    padding:12px 14px;border-radius:12px;background:var(--panel);
+    padding:13px 16px;border-radius:12px;background:var(--panel);
     border:1px solid var(--line);margin-bottom:16px;}
-  .status .name{font-size:16px;font-weight:700;}
-  .status .type{font-family:'Courier New',monospace;font-size:12px;padding:4px 10px;
-    border-radius:20px;background:rgba(232,163,61,0.15);color:var(--mango);}
-  .status .type.is-rest{background:rgba(124,147,176,0.18);color:var(--rest);}
+  .status .name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;}
+  .status .type{font-family:'Courier New',monospace;font-size:12px;font-weight:700;
+    padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;}
+  .status .type.t-gluteo{background:rgba(242,183,5,0.16);color:var(--gold);}
+  .status .type.t-crossfit{background:rgba(232,80,58,0.16);color:var(--corallo);}
+  .status .type.t-descanso{background:rgba(124,147,176,0.18);color:var(--rest);}
 
   .meal{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-    padding:14px 16px;margin-bottom:10px;}
+    padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--line);}
+  .meal.t-gluteo{border-left-color:var(--gold);}
+  .meal.t-crossfit{border-left-color:var(--corallo);}
+  .meal.t-descanso{border-left-color:var(--rest);}
   .meal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
   .meal-name{font-size:14px;font-weight:700;}
-  .meal-time{font-family:'Courier New',monospace;font-size:13px;color:var(--mango);
-    background:rgba(232,163,61,0.1);padding:2px 8px;border-radius:6px;}
-  .is-rest .meal-time{color:var(--rest);background:rgba(124,147,176,0.14);}
-  .opt{font-size:13.5px;line-height:1.55;color:var(--cream-dim);margin-top:4px;}
-  .opt b{color:var(--cream);font-weight:600;}
-  .opt-label{display:inline-block;font-size:10.5px;font-weight:700;color:var(--sage);
-    letter-spacing:.04em;margin-right:4px;}
-  .note-inline{font-size:12px;color:var(--cream-dim);font-style:italic;margin-top:4px;}
+  .meal-time{font-family:'Courier New',monospace;font-size:13px;font-weight:700;
+    padding:2px 8px;border-radius:6px;}
+  .t-gluteo .meal-time{color:var(--gold);background:rgba(242,183,5,0.1);}
+  .t-crossfit .meal-time{color:var(--corallo);background:rgba(232,80,58,0.1);}
+  .t-descanso .meal-time{color:var(--rest);background:rgba(124,147,176,0.14);}
+  .opt{font-size:13.5px;line-height:1.55;color:var(--chalk-dim);margin-top:4px;}
+  .opt b{color:var(--chalk);font-weight:600;}
+  .opt-label{display:inline-block;font-size:10.5px;font-weight:700;color:var(--chalk-dim);
+    letter-spacing:.04em;margin-right:4px;opacity:.7;}
+  .note-inline{font-size:12px;color:var(--chalk-dim);font-style:italic;margin-top:4px;}
+
+  footer{text-align:center;margin-top:24px;font-family:'Courier New',monospace;
+    font-size:10.5px;letter-spacing:.06em;color:var(--chalk-dim);opacity:.55;}
 </style>
 </head>
 <body>
 <div class="board">
   <header>
-    <div class="eyebrow">JM Team · Julio 2026</div>
-    <h1>Plan de Elizabeth</h1>
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="10" width="3" height="4" rx="1" fill="#1C1412"/>
+        <rect x="6" y="8" width="2.5" height="8" rx="1" fill="#1C1412"/>
+        <rect x="9.5" y="11" width="5" height="2" rx="1" fill="#1C1412"/>
+        <rect x="15" y="8" width="2.5" height="8" rx="1" fill="#1C1412"/>
+        <rect x="19" y="10" width="3" height="4" rx="1" fill="#1C1412"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <div class="logo">NUTRIAPP</div>
+      <div class="tagline">Plan de Elizabeth · Julio 2026 · diseñado por <b>pmonteir</b></div>
+    </div>
   </header>
 
   <div class="week" id="week"></div>
   <div class="status" id="status"></div>
   <div id="meals"></div>
+
+  <footer>Madrid · Nutriapp v1</footer>
 </div>
 
 <script>
@@ -131,49 +167,46 @@ const MEALS = {
   ]
 };
 
-// ---- Qué toca cada día de la semana ----
-// key: 0=domingo ... 6=sábado (getDay() de JS)
+// ---- Qué toca cada día de la semana (empieza en lunes) ----
 const WEEK = [
-  { label:'D', full:'Domingo',   type:'descanso' },
   { label:'L', full:'Lunes',     type:'gluteo'   },
   { label:'M', full:'Martes',    type:'crossfit' },
   { label:'X', full:'Miércoles', type:'crossfit' },
   { label:'J', full:'Jueves',    type:'crossfit' },
   { label:'V', full:'Viernes',   type:'gluteo'   },
   { label:'S', full:'Sábado',    type:'descanso' },
+  { label:'D', full:'Domingo',   type:'descanso' },
 ];
 
-const TYPE_LABEL = { gluteo:'Glúteo', crossfit:'CrossFit', descanso:'Descanso' };
+const TYPE_LABEL = { gluteo:'🔥 Glúteo', crossfit:'⚡ CrossFit', descanso:'🌙 Descanso' };
 
-let selected = new Date().getDay(); // hoy por defecto
+// JS getDay(): 0=domingo...6=sábado -> convertir a índice con lunes=0
+let selected = (new Date().getDay() + 6) % 7;
 
 function render(){
   const weekEl = document.getElementById('week');
   weekEl.innerHTML = '';
   WEEK.forEach((d, i) => {
     const btn = document.createElement('div');
-    btn.className = 'day-btn' + (i === selected ? ' active' : '') +
-      (i === selected && d.type === 'descanso' ? ' is-rest' : '');
+    btn.className = 'day-btn' + (i === selected ? ' active t-' + d.type : '');
     btn.textContent = d.label;
     btn.onclick = () => { selected = i; render(); };
     weekEl.appendChild(btn);
   });
 
   const day = WEEK[selected];
-  const isRest = day.type === 'descanso';
 
   const statusEl = document.getElementById('status');
-  statusEl.className = 'status' + (isRest ? ' is-rest' : '');
   statusEl.innerHTML = `
     <span class="name">${day.full}</span>
-    <span class="type${isRest ? ' is-rest' : ''}">${TYPE_LABEL[day.type]}</span>
+    <span class="type t-${day.type}">${TYPE_LABEL[day.type]}</span>
   `;
 
   const mealsEl = document.getElementById('meals');
   mealsEl.innerHTML = '';
   MEALS[day.type].forEach(m => {
     const div = document.createElement('div');
-    div.className = 'meal' + (isRest ? ' is-rest' : '');
+    div.className = 'meal t-' + day.type;
     div.innerHTML = `
       <div class="meal-head">
         <span class="meal-name">${m.name}</span>
