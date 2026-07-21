@@ -14,7 +14,6 @@
   :root{
     --ink:#1C1412;
     --panel:#271C19;
-    --panel2:#2E211D;
     --line:rgba(243,237,228,0.12);
     --chalk:#F3EDE4;
     --chalk-dim:#C9BEB0;
@@ -50,13 +49,30 @@
 
   .status{display:flex;justify-content:space-between;align-items:center;
     padding:13px 16px;border-radius:12px;background:var(--panel);
-    border:1px solid var(--line);margin-bottom:16px;}
+    border:1px solid var(--line);margin-bottom:12px;}
   .status .name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;}
   .status .type{font-family:'Courier New',monospace;font-size:12px;font-weight:700;
     padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;}
   .status .type.t-gluteo{background:rgba(242,183,5,0.16);color:var(--gold);}
   .status .type.t-crossfit{background:rgba(232,80,58,0.16);color:var(--corallo);}
   .status .type.t-descanso{background:rgba(124,147,176,0.18);color:var(--rest);}
+
+  .summary{border-radius:12px;padding:14px 16px;margin-bottom:16px;
+    background:var(--panel);border:1px solid var(--line);}
+  .summary-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+  .summary-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--chalk-dim);}
+  .summary-kcal{font-family:'Bebas Neue',sans-serif;font-size:26px;}
+  .summary-kcal span{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--chalk-dim);
+    font-weight:400;margin-left:3px;}
+  .macro-row{display:flex;gap:8px;}
+  .macro-chip{flex:1;text-align:center;padding:8px 4px;border-radius:8px;
+    background:rgba(243,237,228,0.05);}
+  .macro-chip .val{font-size:15px;font-weight:700;}
+  .macro-chip .lbl{font-size:10px;color:var(--chalk-dim);text-transform:uppercase;
+    letter-spacing:.04em;margin-top:2px;}
+  .summary-note{font-size:11px;color:var(--chalk-dim);opacity:.7;margin-top:10px;
+    font-style:italic;line-height:1.4;}
 
   .meal{background:var(--panel);border:1px solid var(--line);border-radius:12px;
     padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--line);}
@@ -70,14 +86,28 @@
   .t-gluteo .meal-time{color:var(--gold);background:rgba(242,183,5,0.1);}
   .t-crossfit .meal-time{color:var(--corallo);background:rgba(232,80,58,0.1);}
   .t-descanso .meal-time{color:var(--rest);background:rgba(124,147,176,0.14);}
-  .opt{font-size:13.5px;line-height:1.55;color:var(--chalk-dim);margin-top:4px;}
+  .opt-row{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);}
+  .opt-row:first-of-type{border-top:none;margin-top:0;padding-top:0;}
+  .opt{font-size:13.5px;line-height:1.55;color:var(--chalk-dim);}
   .opt b{color:var(--chalk);font-weight:600;}
   .opt-label{display:inline-block;font-size:10.5px;font-weight:700;color:var(--chalk-dim);
     letter-spacing:.04em;margin-right:4px;opacity:.7;}
+  .macro-line{font-family:'Courier New',monospace;font-size:11px;color:var(--chalk-dim);
+    opacity:.75;margin-top:3px;}
   .note-inline{font-size:12px;color:var(--chalk-dim);font-style:italic;margin-top:4px;}
 
-  footer{text-align:center;margin-top:24px;font-family:'Courier New',monospace;
-    font-size:10.5px;letter-spacing:.06em;color:var(--chalk-dim);opacity:.55;}
+  .constants{border-radius:12px;padding:14px 16px;margin-top:20px;
+    background:var(--panel);border:1px solid var(--line);}
+  .constants h3{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.03em;
+    margin:0 0 10px;color:var(--chalk-dim);}
+  .const-row{display:flex;justify-content:space-between;font-size:12.5px;
+    padding:6px 0;border-bottom:1px solid var(--line);}
+  .const-row:last-child{border-bottom:none;}
+  .const-row .k{color:var(--chalk-dim);}
+  .const-row .v{color:var(--chalk);font-weight:600;font-family:'Courier New',monospace;}
+
+  footer{text-align:center;margin-top:18px;font-family:'Courier New',monospace;
+    font-size:10.5px;letter-spacing:.06em;color:var(--chalk-dim);opacity:.5;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -100,71 +130,94 @@
 
   <div class="week" id="week"></div>
   <div class="status" id="status"></div>
+  <div class="summary" id="summary"></div>
   <div id="meals"></div>
 
-  <footer>Madrid · Nutriapp v1</footer>
+  <div class="constants">
+    <h3>Constantes nutricionales</h3>
+    <div class="const-row"><span class="k">1 g proteína</span><span class="v">4 kcal</span></div>
+    <div class="const-row"><span class="k">1 g carbohidrato</span><span class="v">4 kcal</span></div>
+    <div class="const-row"><span class="k">1 g grasa</span><span class="v">9 kcal</span></div>
+    <div class="const-row"><span class="k">Agua diaria</span><span class="v">2–3 L</span></div>
+    <div class="const-row"><span class="k">Sal</span><span class="v">Himalaya, en cada comida</span></div>
+    <div class="const-row"><span class="k">Comida libre</span><span class="v">1× semana, ≥6 días entre ellas</span></div>
+  </div>
+
+  <footer>
+    Kcal y macros estimados con tablas nutricionales estándar —<br>
+    aproximación por ración, no valores exactos de laboratorio.<br>
+    Madrid · Nutriapp v2
+  </footer>
 </div>
 
 <script>
 // ---- Datos base: comidas por tipo de entrenamiento ----
+// kcal/p/c/f = valores estimados para la ración indicada (no por 100g)
 const MEALS = {
   gluteo: [
     { time:'6:15', name:'Desayuno 1', opts:[
-        '40g crema de arroz + 20g proteína + 80g frutos rojos'],
+        { text:'40g crema de arroz + 20g proteína + 80g frutos rojos', kcal:262, p:20, c:42, f:2 } ],
       note:'Pre-entreno: café o té verde · Intra: 6g creatina + 1g sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
     { time:'9:30', name:'Desayuno 2', opts:[
-        '70g jamón serrano / atún / lomo embuchado + <b>180g</b> pan de centeno + 5g aceite de oliva + tomate al gusto'] },
+        { text:'70g jamón serrano / atún / lomo embuchado + <b>180g</b> pan de centeno + 5g aceite de oliva + tomate', kcal:640, p:37, c:88, f:14 } ] },
     { time:'12:30', name:'Comida 3', opts:[
-        '1 yogur de proteína (10-11g) + 1 manzana + 15g almendras'] },
+        { text:'1 yogur de proteína (10-11g) + 1 manzana + 15g almendras', kcal:246, p:14, c:32, f:8 } ] },
     { time:'15:30', name:'Comida', opts:[
-        '<span class="opt-label">OP.1</span>150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz',
-        '<span class="opt-label">OP.2</span>150g chuletas de pavo + 200g verdura verde + 220g patata',
-        '<span class="opt-label">OP.3</span>150g ternera + 60g pasta + 200g verdura verde'] },
+        { label:'OP.1', text:'150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz', kcal:490, p:55, c:48, f:6 },
+        { label:'OP.2', text:'150g chuletas de pavo + 200g verdura verde + 220g patata', kcal:432, p:45, c:45, f:7 },
+        { label:'OP.3', text:'150g ternera + 60g pasta + 200g verdura verde', kcal:508, p:44, c:53, f:11 } ] },
     { time:'18:30', name:'Merienda', opts:[
-        '150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%'] },
+        { text:'150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%', kcal:279, p:16, c:16, f:17 } ] },
     { time:'21:30', name:'Cena', opts:[
-        '<span class="opt-label">OP.1</span>2 huevos enteros + 250g verdura verde + 30g tortas/arroz de arroz',
-        '<span class="opt-label">OP.2</span>140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz',
-        '<span class="opt-label">OP.3</span>170g ternera + 180g patata + 250g verdura verde'] },
+        { label:'OP.1', text:'2 huevos enteros + 250g verdura verde + 30g tortas de arroz', kcal:347, p:22, c:36, f:12 },
+        { label:'OP.2', text:'140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz', kcal:373, p:37, c:35, f:9 },
+        { label:'OP.3', text:'170g ternera + 180g patata + 250g verdura verde', kcal:469, p:46, c:41, f:12 } ] },
     { time:'00:00', name:'Recena', opts:[
-        '20g caseína — solo si está despierta'] },
+        { text:'20g caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
   ],
   crossfit: [
     { time:'6:15', name:'Desayuno 1', opts:[
-        '40g crema de arroz + 20g proteína + 80g frutos rojos'],
+        { text:'40g crema de arroz + 20g proteína + 80g frutos rojos', kcal:262, p:20, c:42, f:2 } ],
       note:'Pre-entreno: café o té verde · Intra: 6g creatina + 1g sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
     { time:'9:30', name:'Desayuno 2', opts:[
-        '70g jamón serrano / atún / lomo embuchado + <b>120g</b> pan de centeno + 5g aceite de oliva + tomate al gusto'] },
+        { text:'70g jamón serrano / atún / lomo embuchado + <b>120g</b> pan de centeno + 5g aceite de oliva + tomate', kcal:490, p:32, c:60, f:13 } ] },
     { time:'12:30', name:'Comida 3', opts:[
-        '1 yogur de proteína (10-11g) + 1 manzana + 15g almendras'] },
+        { text:'1 yogur de proteína (10-11g) + 1 manzana + 15g almendras', kcal:246, p:14, c:32, f:8 } ] },
     { time:'15:30', name:'Comida', opts:[
-        '<span class="opt-label">OP.1</span>150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz',
-        '<span class="opt-label">OP.2</span>150g chuletas de pavo + 200g verdura verde + 220g patata'] },
+        { label:'OP.1', text:'150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz', kcal:490, p:55, c:48, f:6 },
+        { label:'OP.2', text:'150g chuletas de pavo + 200g verdura verde + 220g patata', kcal:432, p:45, c:45, f:7 } ] },
     { time:'18:30', name:'Merienda', opts:[
-        '150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%'] },
+        { text:'150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%', kcal:279, p:16, c:16, f:17 } ] },
     { time:'21:30', name:'Cena', opts:[
-        '<span class="opt-label">OP.1</span>2 huevos enteros + 250g verdura verde + 30g tortas/arroz de arroz',
-        '<span class="opt-label">OP.2</span>140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz'] },
+        { label:'OP.1', text:'2 huevos enteros + 250g verdura verde + 30g tortas de arroz', kcal:347, p:22, c:36, f:12 },
+        { label:'OP.2', text:'140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz', kcal:373, p:37, c:35, f:9 } ] },
     { time:'00:00', name:'Recena', opts:[
-        '20g caseína — solo si está despierta'] },
+        { text:'20g caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
   ],
   descanso: [
     { time:'8:30', name:'Desayuno 1', opts:[
-        '200g queso fresco batido 0% + 100g frutos rojos/sandía + 10g almendras + 40g corn flakes sin azúcar'],
+        { text:'200g queso fresco batido 0% + 100g frutos rojos/sandía + 10g almendras + 40g corn flakes sin azúcar', kcal:341, p:22, c:53, f:6 } ],
       note:'Se puede añadir leche desnatada o de almendras + edulcorante' },
     { time:'12:00', name:'Desayuno 2', opts:[
-        '100g pechuga de pavo (+90%) + 40g tortas de arroz + 1 manzana'] },
+        { text:'100g pechuga de pavo (+90%) + 40g tortas de arroz + 1 manzana', kcal:353, p:28, c:58, f:3 } ] },
     { time:'15:00', name:'Comida', opts:[
-        '<span class="opt-label">OP.1</span>150g pescado blanco/sepia/langostinos + 300g verdura verde + 2 yogures 0%',
-        '<span class="opt-label">OP.2</span>150g lomo/solomillo de cerdo + 300g verdura verde + 2 yogures 0%'] },
+        { label:'OP.1', text:'150g pescado blanco/sepia/langostinos + 300g verdura verde + 2 yogures 0%', kcal:330, p:45, c:26, f:3 },
+        { label:'OP.2', text:'150g lomo/solomillo de cerdo + 300g verdura verde + 2 yogures 0%', kcal:417, p:49, c:26, f:10 } ] },
     { time:'18:00', name:'Merienda', opts:[
-        '120g claras de huevo + 1 huevo + 100g frutos rojos + 40g crema de arroz (tortitas o bizcocho)'] },
+        { text:'120g claras de huevo + 1 huevo + 100g frutos rojos + 40g crema de arroz', kcal:333, p:24, c:44, f:6 } ] },
     { time:'21:30', name:'Cena', opts:[
-        '<span class="opt-label">OP.1</span>150g chuletas de pavo + 200g verdura verde + 100g patata',
-        '<span class="opt-label">OP.2</span>150g pechuga de pollo/pavo + 200g verdura verde + 100g patata'] },
+        { label:'OP.1', text:'150g chuletas de pavo + 200g verdura verde + 100g patata', kcal:340, p:43, c:25, f:7 },
+        { label:'OP.2', text:'150g pechuga de pollo/pavo + 200g verdura verde + 100g patata', kcal:385, p:54, c:25, f:6 } ] },
     { time:'00:00', name:'Recena', opts:[
-        '20g caseína — solo si está despierta'] },
+        { text:'20g caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
   ]
+};
+
+// Total del día, calculado sobre la OP.1 de cada comida con opciones
+const DAY_TOTALS = {
+  gluteo:   { kcal:2338, p:180, c:263, f:59 },
+  crossfit: { kcal:2188, p:175, c:235, f:58 },
+  descanso: { kcal:1771, p:178, c:207, f:25 },
 };
 
 // ---- Qué toca cada día de la semana (empieza en lunes) ----
@@ -196,10 +249,23 @@ function render(){
 
   const day = WEEK[selected];
 
-  const statusEl = document.getElementById('status');
-  statusEl.innerHTML = `
+  document.getElementById('status').innerHTML = `
     <span class="name">${day.full}</span>
     <span class="type t-${day.type}">${TYPE_LABEL[day.type]}</span>
+  `;
+
+  const t = DAY_TOTALS[day.type];
+  document.getElementById('summary').innerHTML = `
+    <div class="summary-top">
+      <span class="summary-label">Total del día</span>
+      <span class="summary-kcal">${t.kcal}<span>kcal</span></span>
+    </div>
+    <div class="macro-row">
+      <div class="macro-chip"><div class="val">${t.p} g</div><div class="lbl">Proteína</div></div>
+      <div class="macro-chip"><div class="val">${t.c} g</div><div class="lbl">Carbos</div></div>
+      <div class="macro-chip"><div class="val">${t.f} g</div><div class="lbl">Grasas</div></div>
+    </div>
+    <div class="summary-note">Calculado sobre la opción 1 de cada comida. Si eliges otra opción, revisa el kcal indicado en esa línea.</div>
   `;
 
   const mealsEl = document.getElementById('meals');
@@ -212,7 +278,12 @@ function render(){
         <span class="meal-name">${m.name}</span>
         <span class="meal-time">${m.time}</span>
       </div>
-      ${m.opts.map(o => `<div class="opt">${o}</div>`).join('')}
+      ${m.opts.map(o => `
+        <div class="opt-row">
+          <div class="opt">${o.label ? `<span class="opt-label">${o.label}</span>` : ''}${o.text}</div>
+          <div class="macro-line">${o.kcal} kcal · P ${o.p}g · C ${o.c}g · G ${o.f}g</div>
+        </div>
+      `).join('')}
       ${m.note ? `<div class="note-inline">${m.note}</div>` : ''}
     `;
     mealsEl.appendChild(div);
