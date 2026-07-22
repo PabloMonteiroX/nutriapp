@@ -14,9 +14,9 @@
   :root{
     --ink:#1C1412;
     --panel:#271C19;
-    --line:rgba(243,237,228,0.12);
-    --chalk:#F3EDE4;
-    --chalk-dim:#C9BEB0;
+    --line:rgba(243,237,228,0.14);
+    --chalk:#F8F4EC;
+    --chalk-dim:#D8CFC0;
     --gold:#F2B705;
     --corallo:#E8503A;
     --rest:#7C93B0;
@@ -40,22 +40,42 @@
   .tagline b{color:var(--gold);}
 
   .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px;}
-  .day-btn{padding:11px 0;border-radius:10px;border:1px solid var(--line);
+  .day-btn{position:relative;padding:11px 0;border-radius:10px;border:1px solid var(--line);
     background:var(--panel);color:var(--chalk-dim);font-size:13px;font-weight:700;
     text-align:center;cursor:pointer;font-family:'Work Sans',sans-serif;}
   .day-btn.active.t-gluteo{background:var(--gold);color:#241a00;border-color:var(--gold);}
   .day-btn.active.t-crossfit{background:var(--corallo);color:#2a0900;border-color:var(--corallo);}
   .day-btn.active.t-descanso{background:var(--rest);color:#0e1620;border-color:var(--rest);}
+  .day-btn .dot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;
+    background:var(--chalk);}
 
   .status{display:flex;justify-content:space-between;align-items:center;
     padding:13px 16px;border-radius:12px;background:var(--panel);
-    border:1px solid var(--line);margin-bottom:12px;}
+    border:1px solid var(--line);margin-bottom:10px;gap:10px;}
+  .status .name-wrap{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
   .status .name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;}
+  .status .changed-tag{font-family:'Courier New',monospace;font-size:10px;font-weight:700;
+    color:var(--corallo);background:rgba(232,80,58,0.14);padding:2px 8px;border-radius:20px;
+    text-transform:uppercase;letter-spacing:.05em;}
   .status .type{font-family:'Courier New',monospace;font-size:12px;font-weight:700;
-    padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;}
+    padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;flex:none;}
   .status .type.t-gluteo{background:rgba(242,183,5,0.16);color:var(--gold);}
   .status .type.t-crossfit{background:rgba(232,80,58,0.16);color:var(--corallo);}
   .status .type.t-descanso{background:rgba(124,147,176,0.18);color:var(--rest);}
+
+  .override{display:none;padding:12px 14px;border-radius:12px;background:var(--panel);
+    border:1px dashed var(--line);margin-bottom:16px;}
+  .override.show{display:block;}
+  .override-label{font-family:'Courier New',monospace;font-size:10.5px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--chalk-dim);margin-bottom:8px;}
+  .override-btns{display:flex;gap:6px;flex-wrap:wrap;}
+  .ov-btn{padding:7px 12px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--chalk-dim);font-size:12px;font-weight:600;
+    cursor:pointer;font-family:'Work Sans',sans-serif;}
+  .ov-btn.sel.t-gluteo{background:var(--gold);color:#241a00;border-color:var(--gold);}
+  .ov-btn.sel.t-crossfit{background:var(--corallo);color:#2a0900;border-color:var(--corallo);}
+  .ov-btn.sel.t-descanso{background:var(--rest);color:#0e1620;border-color:var(--rest);}
+  .ov-btn.reset{color:var(--chalk-dim);opacity:.7;text-decoration:underline;border:none;padding:7px 4px;}
 
   .summary{border-radius:12px;padding:14px 16px;margin-bottom:16px;
     background:var(--panel);border:1px solid var(--line);}
@@ -67,34 +87,36 @@
     font-weight:400;margin-left:3px;}
   .macro-row{display:flex;gap:8px;}
   .macro-chip{flex:1;text-align:center;padding:8px 4px;border-radius:8px;
-    background:rgba(243,237,228,0.05);}
+    background:rgba(248,244,236,0.06);}
   .macro-chip .val{font-size:15px;font-weight:700;}
   .macro-chip .lbl{font-size:10px;color:var(--chalk-dim);text-transform:uppercase;
     letter-spacing:.04em;margin-top:2px;}
-  .summary-note{font-size:11px;color:var(--chalk-dim);opacity:.7;margin-top:10px;
+  .summary-note{font-size:11px;color:var(--chalk-dim);opacity:.8;margin-top:10px;
     font-style:italic;line-height:1.4;}
 
   .meal{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-    padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--line);}
+    padding:15px 16px;margin-bottom:10px;border-left:3px solid var(--line);}
   .meal.t-gluteo{border-left-color:var(--gold);}
   .meal.t-crossfit{border-left-color:var(--corallo);}
   .meal.t-descanso{border-left-color:var(--rest);}
-  .meal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
-  .meal-name{font-size:14px;font-weight:700;}
+  .meal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .meal-name{font-size:15px;font-weight:700;color:var(--chalk);}
   .meal-time{font-family:'Courier New',monospace;font-size:13px;font-weight:700;
     padding:2px 8px;border-radius:6px;}
-  .t-gluteo .meal-time{color:var(--gold);background:rgba(242,183,5,0.1);}
-  .t-crossfit .meal-time{color:var(--corallo);background:rgba(232,80,58,0.1);}
-  .t-descanso .meal-time{color:var(--rest);background:rgba(124,147,176,0.14);}
-  .opt-row{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);}
+  .t-gluteo .meal-time{color:var(--gold);background:rgba(242,183,5,0.12);}
+  .t-crossfit .meal-time{color:var(--corallo);background:rgba(232,80,58,0.12);}
+  .t-descanso .meal-time{color:var(--rest);background:rgba(124,147,176,0.16);}
+  .opt-row{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
   .opt-row:first-of-type{border-top:none;margin-top:0;padding-top:0;}
-  .opt{font-size:13.5px;line-height:1.55;color:var(--chalk-dim);}
-  .opt b{color:var(--chalk);font-weight:600;}
+  .opt{font-size:15px;line-height:1.65;color:var(--chalk);font-weight:500;}
+  .opt b{color:var(--gold);font-weight:700;}
   .opt-label{display:inline-block;font-size:10.5px;font-weight:700;color:var(--chalk-dim);
-    letter-spacing:.04em;margin-right:4px;opacity:.7;}
-  .macro-line{font-family:'Courier New',monospace;font-size:11px;color:var(--chalk-dim);
-    opacity:.75;margin-top:3px;}
-  .note-inline{font-size:12px;color:var(--chalk-dim);font-style:italic;margin-top:4px;}
+    letter-spacing:.04em;margin-right:5px;background:rgba(248,244,236,0.08);
+    padding:2px 6px;border-radius:4px;}
+  .macro-line{font-family:'Courier New',monospace;font-size:11.5px;color:var(--chalk-dim);
+    opacity:.85;margin-top:4px;}
+  .note-inline{font-size:12.5px;color:var(--chalk-dim);font-style:italic;margin-top:6px;
+    line-height:1.5;}
 
   .constants{border-radius:12px;padding:14px 16px;margin-top:20px;
     background:var(--panel);border:1px solid var(--line);}
@@ -107,7 +129,7 @@
   .const-row .v{color:var(--chalk);font-weight:600;font-family:'Courier New',monospace;}
 
   footer{text-align:center;margin-top:18px;font-family:'Courier New',monospace;
-    font-size:10.5px;letter-spacing:.06em;color:var(--chalk-dim);opacity:.5;line-height:1.6;}
+    font-size:10.5px;letter-spacing:.06em;color:var(--chalk-dim);opacity:.55;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -124,12 +146,13 @@
     </div>
     <div class="brand-text">
       <div class="logo">NUTRIAPP</div>
-      <div class="tagline">Elizabeth · Verano 2026 · diseñado por <b>pmonteir</b></div>
+      <div class="tagline">Plan de Elizabeth · Julio 2026 · diseñado por <b>pmonteir</b></div>
     </div>
   </header>
 
   <div class="week" id="week"></div>
   <div class="status" id="status"></div>
+  <div class="override" id="override"></div>
   <div class="summary" id="summary"></div>
   <div id="meals"></div>
 
@@ -146,7 +169,7 @@
   <footer>
     Kcal y macros estimados con tablas nutricionales estándar —<br>
     aproximación por ración, no valores exactos de laboratorio.<br>
-    Madrid · Nutriapp v2
+    Madrid · Nutriapp v3
   </footer>
 </div>
 
@@ -232,29 +255,68 @@ const WEEK = [
 ];
 
 const TYPE_LABEL = { gluteo:'🔥 Glúteo', crossfit:'⚡ CrossFit', descanso:'🌙 Descanso' };
+const TYPES = ['gluteo','crossfit','descanso'];
 
 // JS getDay(): 0=domingo...6=sábado -> convertir a índice con lunes=0
-let selected = (new Date().getDay() + 6) % 7;
+const todayIndex = (new Date().getDay() + 6) % 7;
+let selected = todayIndex;
+
+// ---- Override: "este día se cambió / no se pudo hacer" ----
+// Se guarda por día de la semana (lunes..domingo), no por fecha exacta:
+// dura hasta que se pulse "Restablecer" para ese día.
+function getOverrides(){
+  try { return JSON.parse(localStorage.getItem('nutriapp_overrides') || '{}'); }
+  catch(e){ return {}; }
+}
+function getOverride(dayIndex){
+  return getOverrides()[dayIndex] || null;
+}
+function setOverride(dayIndex, type){
+  const ov = getOverrides();
+  if (type) ov[dayIndex] = type; else delete ov[dayIndex];
+  try { localStorage.setItem('nutriapp_overrides', JSON.stringify(ov)); } catch(e){}
+  render();
+}
 
 function render(){
   const weekEl = document.getElementById('week');
   weekEl.innerHTML = '';
   WEEK.forEach((d, i) => {
+    const ov = getOverride(i);
+    const effType = ov || d.type;
     const btn = document.createElement('div');
-    btn.className = 'day-btn' + (i === selected ? ' active t-' + d.type : '');
-    btn.textContent = d.label;
+    btn.className = 'day-btn' + (i === selected ? ' active t-' + effType : '');
+    btn.innerHTML = d.label + (ov ? '<span class="dot"></span>' : '');
     btn.onclick = () => { selected = i; render(); };
     weekEl.appendChild(btn);
   });
 
   const day = WEEK[selected];
+  const override = getOverride(selected);
+  const type = override || day.type;
 
   document.getElementById('status').innerHTML = `
-    <span class="name">${day.full}</span>
-    <span class="type t-${day.type}">${TYPE_LABEL[day.type]}</span>
+    <div class="name-wrap">
+      <span class="name">${day.full}</span>
+      ${override ? '<span class="changed-tag">Cambiado</span>' : ''}
+    </div>
+    <span class="type t-${type}">${TYPE_LABEL[type]}</span>
   `;
 
-  const t = DAY_TOTALS[day.type];
+  const ovEl = document.getElementById('override');
+  ovEl.classList.add('show');
+  ovEl.innerHTML = `
+    <div class="override-label">¿Este día se cambió o no se pudo hacer?</div>
+    <div class="override-btns">
+      ${TYPES.map(t => `<button class="ov-btn${type===t?' sel t-'+t:''}" data-t="${t}">${TYPE_LABEL[t]}</button>`).join('')}
+      ${override ? '<button class="ov-btn reset" data-t="">Restablecer plan</button>' : ''}
+    </div>
+  `;
+  ovEl.querySelectorAll('.ov-btn').forEach(b => {
+    b.onclick = () => setOverride(selected, b.dataset.t || null);
+  });
+
+  const t = DAY_TOTALS[type];
   document.getElementById('summary').innerHTML = `
     <div class="summary-top">
       <span class="summary-label">Total del día</span>
@@ -270,9 +332,9 @@ function render(){
 
   const mealsEl = document.getElementById('meals');
   mealsEl.innerHTML = '';
-  MEALS[day.type].forEach(m => {
+  MEALS[type].forEach(m => {
     const div = document.createElement('div');
-    div.className = 'meal t-' + day.type;
+    div.className = 'meal t-' + type;
     div.innerHTML = `
       <div class="meal-head">
         <span class="meal-name">${m.name}</span>
