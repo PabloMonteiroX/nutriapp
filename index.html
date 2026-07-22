@@ -42,7 +42,8 @@
   .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px;}
   .day-btn{position:relative;padding:11px 0;border-radius:10px;border:1px solid var(--line);
     background:var(--panel);color:var(--chalk-dim);font-size:13px;font-weight:700;
-    text-align:center;cursor:pointer;font-family:'Work Sans',sans-serif;}
+    text-align:center;cursor:pointer;font-family:'Work Sans',sans-serif;
+    appearance:none;-webkit-appearance:none;}
   .day-btn:focus-visible,.ov-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
   .day-btn.active.t-gluteo{background:var(--gold);color:#241a00;border-color:var(--gold);}
   .day-btn.active.t-crossfit{background:var(--corallo);color:#2a0900;border-color:var(--corallo);}
@@ -72,7 +73,7 @@
   .override-btns{display:flex;gap:6px;flex-wrap:wrap;}
   .ov-btn{padding:7px 12px;border-radius:8px;border:1px solid var(--line);
     background:transparent;color:var(--chalk-dim);font-size:12px;font-weight:600;
-    cursor:pointer;font-family:'Work Sans',sans-serif;}
+    cursor:pointer;font-family:'Work Sans',sans-serif;appearance:none;-webkit-appearance:none;}
   .ov-btn.sel.t-gluteo{background:var(--gold);color:#241a00;border-color:var(--gold);}
   .ov-btn.sel.t-crossfit{background:var(--corallo);color:#2a0900;border-color:var(--corallo);}
   .ov-btn.sel.t-descanso{background:var(--rest);color:#0e1620;border-color:var(--rest);}
@@ -170,76 +171,73 @@
   <footer>
     Kcal y macros estimados con tablas nutricionales estándar —<br>
     aproximación por ración, no valores exactos de laboratorio.<br>
-    Madrid · Nutriapp v3
+    Madrid · Nutriapp v4
   </footer>
 </div>
 
 <script>
 // ---- Datos base: comidas por tipo de entrenamiento ----
-// kcal/p/c/f = valores estimados para la ración indicada (no por 100g)
+// kcal/p/c/f = valores estimados para la ración indicada (no por <b>100g</b>)
 const MEALS = {
   gluteo: [
     { time:'6:15', name:'Desayuno 1', opts:[
-        { text:'40g crema de arroz + 20g proteína + 80g frutos rojos', kcal:262, p:20, c:42, f:2 } ],
-      note:'Pre-entreno: café o té verde · Intra: 6g creatina + 1g sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
+        { text:'<b>40g</b> crema de arroz + <b>20g</b> proteína + <b>80g</b> frutos rojos', kcal:262, p:20, c:42, f:2 } ],
+      note:'Pre-entreno: café o té verde · Intra: <b>6g</b> creatina + <b>1g</b> sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
     { time:'9:30', name:'Desayuno 2', opts:[
-        { text:'70g jamón serrano / atún / lomo embuchado + <b>180g</b> pan de centeno + 5g aceite de oliva + tomate', kcal:640, p:37, c:88, f:14 } ] },
+        { text:'<b>70g</b> jamón serrano / atún / lomo embuchado + <b>180g</b> pan de centeno + <b>5g</b> aceite de oliva + tomate', kcal:640, p:37, c:88, f:14 } ] },
     { time:'12:30', name:'Comida 3', opts:[
-        { text:'1 yogur de proteína (10-11g) + 1 manzana + 15g almendras', kcal:246, p:14, c:32, f:8 } ] },
+        { text:'1 yogur de proteína (<b>10-11g</b>) + <b>1 manzana</b> + <b>15g</b> almendras', kcal:246, p:14, c:32, f:8 } ] },
     { time:'15:30', name:'Comida', opts:[
-        { label:'OP.1', text:'150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz', kcal:490, p:55, c:48, f:6 },
-        { label:'OP.2', text:'150g chuletas de pavo + 200g verdura verde + 220g patata', kcal:432, p:45, c:45, f:7 },
-        { label:'OP.3', text:'150g ternera + 60g pasta + 200g verdura verde', kcal:508, p:44, c:53, f:11 } ] },
+        { text:'<b>150g</b> ternera + <b>60g</b> pasta + <b>200g</b> verdura verde', kcal:508, p:44, c:53, f:11 } ] },
     { time:'18:30', name:'Merienda', opts:[
-        { text:'150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%', kcal:279, p:16, c:16, f:17 } ] },
+        { text:'<b>150g</b> queso fresco batido 0% + <b>10g</b> almendras + <b>1 onza</b> chocolate 80%', kcal:279, p:16, c:16, f:17 } ] },
     { time:'21:30', name:'Cena', opts:[
-        { label:'OP.1', text:'2 huevos enteros + 250g verdura verde + 30g tortas de arroz', kcal:347, p:22, c:36, f:12 },
-        { label:'OP.2', text:'140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz', kcal:373, p:37, c:35, f:9 },
-        { label:'OP.3', text:'170g ternera + 180g patata + 250g verdura verde', kcal:469, p:46, c:41, f:12 } ] },
+        { text:'<b>170g</b> ternera + <b>180g</b> patata + <b>250g</b> verdura verde', kcal:469, p:46, c:41, f:12 } ] },
     { time:'00:00', name:'Recena', opts:[
-        { text:'20g caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
+        { text:'<b>20g</b> caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
   ],
   crossfit: [
     { time:'6:15', name:'Desayuno 1', opts:[
-        { text:'40g crema de arroz + 20g proteína + 80g frutos rojos', kcal:262, p:20, c:42, f:2 } ],
-      note:'Pre-entreno: café o té verde · Intra: 6g creatina + 1g sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
+        { text:'<b>40g</b> crema de arroz + <b>20g</b> proteína + <b>80g</b> frutos rojos', kcal:262, p:20, c:42, f:2 } ],
+      note:'Pre-entreno: café o té verde · Intra: <b>6g</b> creatina + <b>1g</b> sal Himalaya en agua · Post: nada, se pasa directo al desayuno 2' },
     { time:'9:30', name:'Desayuno 2', opts:[
-        { text:'70g jamón serrano / atún / lomo embuchado + <b>120g</b> pan de centeno + 5g aceite de oliva + tomate', kcal:490, p:32, c:60, f:13 } ] },
+        { text:'<b>70g</b> jamón serrano / atún / lomo embuchado + <b>120g</b> pan de centeno + <b>5g</b> aceite de oliva + tomate', kcal:490, p:32, c:60, f:13 } ] },
     { time:'12:30', name:'Comida 3', opts:[
-        { text:'1 yogur de proteína (10-11g) + 1 manzana + 15g almendras', kcal:246, p:14, c:32, f:8 } ] },
+        { text:'1 yogur de proteína (<b>10-11g</b>) + <b>1 manzana</b> + <b>15g</b> almendras', kcal:246, p:14, c:32, f:8 } ] },
     { time:'15:30', name:'Comida', opts:[
-        { label:'OP.1', text:'150g pechuga/hamburguesa de pollo + 200g verdura verde + 50g arroz', kcal:490, p:55, c:48, f:6 },
-        { label:'OP.2', text:'150g chuletas de pavo + 200g verdura verde + 220g patata', kcal:432, p:45, c:45, f:7 } ] },
+        { label:'OP.1', text:'<b>150g</b> pechuga/hamburguesa de pollo + <b>200g</b> verdura verde + <b>50g</b> arroz', kcal:490, p:55, c:48, f:6 },
+        { label:'OP.2', text:'<b>150g</b> chuletas de pavo + <b>200g</b> verdura verde + <b>220g</b> patata', kcal:432, p:45, c:45, f:7 } ] },
     { time:'18:30', name:'Merienda', opts:[
-        { text:'150g queso fresco batido 0% + 10g almendras + 1 onza chocolate 80%', kcal:279, p:16, c:16, f:17 } ] },
+        { text:'<b>150g</b> queso fresco batido 0% + <b>10g</b> almendras + <b>1 onza</b> chocolate 80%', kcal:279, p:16, c:16, f:17 } ] },
     { time:'21:30', name:'Cena', opts:[
-        { label:'OP.1', text:'2 huevos enteros + 250g verdura verde + 30g tortas de arroz', kcal:347, p:22, c:36, f:12 },
-        { label:'OP.2', text:'140g contramuslo de pollo sin piel + 250g verdura verde + 30g tortas de arroz', kcal:373, p:37, c:35, f:9 } ] },
+        { label:'OP.1', text:'<b>2 huevos</b> enteros + <b>250g</b> verdura verde + <b>30g</b> tortas de arroz', kcal:347, p:22, c:36, f:12 },
+        { label:'OP.2', text:'<b>140g</b> contramuslo de pollo sin piel + <b>250g</b> verdura verde + <b>30g</b> tortas de arroz', kcal:373, p:37, c:35, f:9 } ] },
     { time:'00:00', name:'Recena', opts:[
-        { text:'20g caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
+        { text:'<b>20g</b> caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
   ],
   descanso: [
     { time:'8:30', name:'Desayuno 1', opts:[
-        { text:'200g queso fresco batido 0% + 100g frutos rojos/sandía + 10g almendras + 40g corn flakes sin azúcar', kcal:341, p:22, c:53, f:6 } ],
+        { text:'<b>200g</b> queso fresco batido 0% + <b>100g</b> frutos rojos/sandía + <b>10g</b> almendras + <b>40g</b> corn flakes sin azúcar', kcal:341, p:22, c:53, f:6 } ],
       note:'Se puede añadir leche desnatada o de almendras + edulcorante' },
     { time:'12:00', name:'Desayuno 2', opts:[
-        { text:'100g pechuga de pavo (+90%) + 40g tortas de arroz + 1 manzana', kcal:353, p:28, c:58, f:3 } ] },
+        { text:'<b>100g</b> pechuga de pavo (+90%) + <b>40g</b> tortas de arroz + <b>1 manzana</b>', kcal:353, p:28, c:58, f:3 } ] },
     { time:'15:00', name:'Comida', opts:[
-        { label:'OP.1', text:'150g pescado blanco/sepia/langostinos + 300g verdura verde + 2 yogures 0%', kcal:330, p:45, c:26, f:3 },
-        { label:'OP.2', text:'150g lomo/solomillo de cerdo + 300g verdura verde + 2 yogures 0%', kcal:417, p:49, c:26, f:10 } ] },
+        { label:'OP.1', text:'<b>150g</b> pescado blanco/sepia/langostinos + <b>300g</b> verdura verde + <b>2 yogures</b> 0%', kcal:330, p:45, c:26, f:3 },
+        { label:'OP.2', text:'<b>150g</b> lomo/solomillo de cerdo + <b>300g</b> verdura verde + <b>2 yogures</b> 0%', kcal:417, p:49, c:26, f:10 } ] },
     { time:'18:00', name:'Merienda', opts:[
-        { text:'120g claras de huevo + 1 huevo + 100g frutos rojos + 40g crema de arroz', kcal:333, p:24, c:44, f:6 } ] },
+        { text:'<b>120g</b> claras de huevo + <b>1 huevo</b> + <b>100g</b> frutos rojos + <b>40g</b> crema de arroz', kcal:333, p:24, c:44, f:6 } ] },
     { time:'21:30', name:'Cena', opts:[
-        { label:'OP.1', text:'150g chuletas de pavo + 200g verdura verde + 100g patata', kcal:340, p:43, c:25, f:7 },
-        { label:'OP.2', text:'150g pechuga de pollo/pavo + 200g verdura verde + 100g patata', kcal:385, p:54, c:25, f:6 } ] },
+        { label:'OP.1', text:'<b>150g</b> chuletas de pavo + <b>200g</b> verdura verde + <b>100g</b> patata', kcal:340, p:43, c:25, f:7 },
+        { label:'OP.2', text:'<b>150g</b> pechuga de pollo/pavo + <b>200g</b> verdura verde + <b>100g</b> patata', kcal:385, p:54, c:25, f:6 } ] },
     { time:'00:00', name:'Recena', opts:[
-        { text:'20g caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
+        { text:'<b>20g</b> caseína — solo si está despierta', kcal:74, p:16, c:1, f:0 } ] },
   ]
 };
 
-// Total del día, calculado sobre la OP.1 de cada comida con opciones
+// Total del día. Glúteo usa su única opción real (OP.3 original del PDF).
+// CrossFit/Descanso se calculan sobre la OP.1 de cada comida con opciones.
 const DAY_TOTALS = {
-  gluteo:   { kcal:2338, p:180, c:263, f:59 },
+  gluteo:   { kcal:2478, p:193, c:273, f:64 },
   crossfit: { kcal:2188, p:175, c:235, f:58 },
   descanso: { kcal:1771, p:178, c:207, f:25 },
 };
@@ -330,7 +328,7 @@ function render(){
       <div class="macro-chip"><div class="val">${t.c} g</div><div class="lbl">Carbos</div></div>
       <div class="macro-chip"><div class="val">${t.f} g</div><div class="lbl">Grasas</div></div>
     </div>
-    <div class="summary-note">Calculado sobre la opción 1 de cada comida. Si eliges otra opción, revisa las kcal indicadas en esa línea.</div>
+    <div class="summary-note">${type === 'gluteo' ? 'Comida y cena de glúteo tienen ración única — sin alternativas.' : 'Calculado sobre la opción 1 de cada comida. Si eliges otra opción, revisa las kcal indicadas en esa línea.'}</div>
   `;
 
   const mealsEl = document.getElementById('meals');
