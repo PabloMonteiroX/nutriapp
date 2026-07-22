@@ -43,6 +43,7 @@
   .day-btn{position:relative;padding:11px 0;border-radius:10px;border:1px solid var(--line);
     background:var(--panel);color:var(--chalk-dim);font-size:13px;font-weight:700;
     text-align:center;cursor:pointer;font-family:'Work Sans',sans-serif;}
+  .day-btn:focus-visible,.ov-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
   .day-btn.active.t-gluteo{background:var(--gold);color:#241a00;border-color:var(--gold);}
   .day-btn.active.t-crossfit{background:var(--corallo);color:#2a0900;border-color:var(--corallo);}
   .day-btn.active.t-descanso{background:var(--rest);color:#0e1620;border-color:var(--rest);}
@@ -135,7 +136,7 @@
 <body>
 <div class="board">
   <header>
-    <div class="badge">
+    <div class="badge" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="10" width="3" height="4" rx="1" fill="#1C1412"/>
         <rect x="6" y="8" width="2.5" height="8" rx="1" fill="#1C1412"/>
@@ -284,9 +285,11 @@ function render(){
   WEEK.forEach((d, i) => {
     const ov = getOverride(i);
     const effType = ov || d.type;
-    const btn = document.createElement('div');
+    const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'day-btn' + (i === selected ? ' active t-' + effType : '');
-    btn.innerHTML = d.label + (ov ? '<span class="dot"></span>' : '');
+    btn.setAttribute('aria-label', d.full + (ov ? ', cambiado' : '') + (i === selected ? ', seleccionado' : ''));
+    btn.innerHTML = d.label + (ov ? '<span class="dot" aria-hidden="true"></span>' : '');
     btn.onclick = () => { selected = i; render(); };
     weekEl.appendChild(btn);
   });
@@ -308,8 +311,8 @@ function render(){
   ovEl.innerHTML = `
     <div class="override-label">¿Este día se cambió o no se pudo hacer?</div>
     <div class="override-btns">
-      ${TYPES.map(t => `<button class="ov-btn${type===t?' sel t-'+t:''}" data-t="${t}">${TYPE_LABEL[t]}</button>`).join('')}
-      ${override ? '<button class="ov-btn reset" data-t="">Restablecer plan</button>' : ''}
+      ${TYPES.map(t => `<button type="button" class="ov-btn${type===t?' sel t-'+t:''}" data-t="${t}">${TYPE_LABEL[t]}</button>`).join('')}
+      ${override ? '<button type="button" class="ov-btn reset" data-t="">Restablecer plan</button>' : ''}
     </div>
   `;
   ovEl.querySelectorAll('.ov-btn').forEach(b => {
@@ -327,7 +330,7 @@ function render(){
       <div class="macro-chip"><div class="val">${t.c} g</div><div class="lbl">Carbos</div></div>
       <div class="macro-chip"><div class="val">${t.f} g</div><div class="lbl">Grasas</div></div>
     </div>
-    <div class="summary-note">Calculado sobre la opción 1 de cada comida. Si eliges otra opción, revisa el kcal indicado en esa línea.</div>
+    <div class="summary-note">Calculado sobre la opción 1 de cada comida. Si eliges otra opción, revisa las kcal indicadas en esa línea.</div>
   `;
 
   const mealsEl = document.getElementById('meals');
